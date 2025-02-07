@@ -1,0 +1,38 @@
+/* Centering styles for vertical alignment */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: flex-start; /* Align items to the top vertically */
+  min-height: 100vh;
+  text-align: center; /* Center text alignment */
+  padding-top: 1rem; /* Add padding if needed for vertical spacing */
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Equivalent to space-x-4 in Tailwind */
+  margin: 1rem 0; /* Equivalent to my-4 in Tailwind */
+}
+
+.menu-button {
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+  color: inherit; /* Inherit text color */
+  padding: 0; /* Remove padding */
+  cursor: pointer; /* Change cursor to pointer */
+  text-decoration: none; /* Remove underline */
+}
+
+.menu-button.active {
+  text-decoration: underline; /* Underline active page */
+}
+
+/* Custom class for fixed image size */
+.fixed-image-size {
+  width: 378px; /* Approximately 10cm */
+  height: 400px; /* Set a fixed height */
+  object-fit: cover; /* Maintain aspect ratio and cover the area */
+  max-width: 100%;
+} 
