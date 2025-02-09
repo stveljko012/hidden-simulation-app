@@ -31,6 +31,10 @@ const Gallery = () => {
                     feedPosition,
                     userId: user.userId,
                     creatorId: currentMedia.creatorId,
+                    creatorName: currentMedia.creatorName,
+                    userName: user.username,
+                    userLocation: user.location,
+                    videoCategory: currentMedia.category,
                     videoId: currentMedia.id,
                 })
             }
