@@ -1,77 +1,83 @@
-import { useState, useEffect } from 'react';
-import '../styles/styles.css'; // Import the CSS file
-
-// Import the JSON data
-import mediaData from '../../public/media.json';
-
-// Function to shuffle an array
-const shuffleArray = (array: string[]) => {
-  return array.sort(() => Math.random() - 0.5);
-};
+import { useState, useEffect } from 'react'
+import '../styles/styles.css'
+import { media, Media } from '../data/media'
+import { useAnalytics } from '@/contexts/analytics/analytics.context'
+import { useSession } from '@/contexts/session/session.context'
 
 const Gallery = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [media, setMedia] = useState<string[]>([]);
+    const analytics = useAnalytics()
+    const { user, sessionId, addWatchedVideo } = useSession()
 
-  useEffect(() => {
-    // Fetch the media data from the JSON file
-    const fetchMediaData = async () => {
-      try {
-        const response = await fetch('/media.json');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+    const [show, setShow] = useState(false)
+
+    const [feedPosition, setFeedPosition] = useState(1)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentMedia, setCurrentMedia] = useState<Media | null>(null)
+
+    useEffect(() => {
+        setCurrentMedia(media[currentIndex])
+        setShow(true)
+    }, [])
+
+    const updateMedia = () => {
+        const next = media[currentIndex]
+
+        if (next) {
+            if (sessionId && user && currentMedia) {
+                analytics.trackVideoView({
+                    watchPercentage: 0.68,
+                    watchTime: 3,
+                    sessionId,
+                    feedPosition,
+                    userId: user.userId,
+                    creatorId: currentMedia.creatorId,
+                    videoId: currentMedia.id,
+                })
+            }
+
+            setCurrentMedia(next)
+            setFeedPosition((prev) => prev + 1)
+
+            addWatchedVideo()
         }
-        const data = await response.json();
-        console.log('Fetched data:', data); // Debugging line
-        if (Array.isArray(data.media)) {
-          setMedia(shuffleArray([...data.media]));
-        } else {
-          console.error('Media data is not an array:', data.media);
-        }
-      } catch (error) {
-        console.error('Failed to fetch media data:', error);
-      }
-    };
+    }
 
-    fetchMediaData();
-  }, []);
+    const handlePrevious = async () => {
+        setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : media.length - 1))
+        updateMedia()
+    }
 
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : media.length - 1));
-  };
+    const handleNext = async () => {
+        setCurrentIndex((prevIndex) => (prevIndex < media.length - 1 ? prevIndex + 1 : 0))
+        updateMedia()
+    }
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex < media.length - 1 ? prevIndex + 1 : 0));
-  };
+    const isVideo = (media: Media | null) => {
+        return media?.mediaType === 'video' || false
+    }
 
-  const isVideo = (url: string) => {
-    return url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg');
-  };
+    if (!show) {
+        return <>Loading...</>
+    }
 
-  return (
-    <div className="flex flex-col items-center">
-      {media.length > 0 && (
-        isVideo(media[currentIndex]) ? (
-          <video
-            src={media[currentIndex]}
-            controls
-            autoPlay
-            className="fixed-image-size"
-          />
-        ) : (
-          <img
-            src={media[currentIndex]}
-            alt={`Media ${currentIndex + 1}`}
-            className="fixed-image-size"
-          />
-        )
-      )}
-      <div className="flex space-x-4 mt-4">
-        <button onClick={handlePrevious} className="px-4 py-2 bg-gray-200">Previous</button>
-        <button onClick={handleNext} className="px-4 py-2 bg-gray-200">Next</button>
-      </div>
-    </div>
-  );
-};
+    return (
+        <div className="flex flex-col items-center">
+            {media.length > 0 &&
+                (isVideo(currentMedia) ? (
+                    <video src={currentMedia?.url} controls autoPlay className="fixed-image-size" />
+                ) : (
+                    <img src={currentMedia?.url} alt={`Media ${currentIndex + 1}`} className="fixed-image-size" />
+                ))}
+            <div className="flex space-x-4 mt-4">
+                <button onClick={handlePrevious} className="px-4 py-2 bg-gray-200">
+                    Previous
+                </button>
+                <button onClick={handleNext} className="px-4 py-2 bg-gray-200">
+                    Next
+                </button>
+            </div>
+        </div>
+    )
+}
 
-export default Gallery; 
+export default Gallery
