@@ -3,12 +3,10 @@ import '../styles/styles.css'
 import { media, Media } from '../data/media'
 import { useAnalytics } from '@/contexts/analytics/analytics.context'
 import { useSession } from '@/contexts/session/session.context'
-import { useRouter } from 'next/router'
 
 const Gallery = () => {
-    const router = useRouter()
     const analytics = useAnalytics()
-    const { user, sessionId } = useSession()
+    const { user, sessionId, addWatchedVideo } = useSession()
 
     const [show, setShow] = useState(false)
 
@@ -17,20 +15,16 @@ const Gallery = () => {
     const [currentMedia, setCurrentMedia] = useState<Media | null>(null)
 
     useEffect(() => {
-        if (!user || !sessionId) {
-            router.replace('/')
-        } else {
-            setCurrentMedia(media[currentIndex])
-            setShow(true)
-        }
+        setCurrentMedia(media[currentIndex])
+        setShow(true)
     }, [])
 
-    const updateMedia = async () => {
+    const updateMedia = () => {
         const next = media[currentIndex]
 
         if (next) {
             if (sessionId && user && currentMedia) {
-                await analytics.trackVideoView({
+                analytics.trackVideoView({
                     watchPercentage: 0.68,
                     watchTime: 3,
                     sessionId,
@@ -43,6 +37,8 @@ const Gallery = () => {
 
             setCurrentMedia(next)
             setFeedPosition((prev) => prev + 1)
+
+            addWatchedVideo()
         }
     }
 

@@ -1,23 +1,26 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from '@/contexts/session/session.context'
+import { useAnalytics } from '@/contexts/analytics/analytics.context'
+import { LAST_VISIT_STORAGE_KEY } from '@/contexts/session/constants/storage-keys.constant'
 
 const Home = () => {
-    const { login } = useSession()
+    const { login, user, sessionId, getReturnDay } = useSession()
+    const analytics = useAnalytics()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const router = useRouter()
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         setError('')
 
         try {
             if (username && password) {
                 login(username, password)
-                router.push('/following')
+                router.push('/home')
             } else {
-                alert('Please enter a username and password.')
+                setError('Enter username and password.')
             }
         } catch (e) {
             setError('Invalid username and password combination.')
