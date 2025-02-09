@@ -36,6 +36,7 @@ const Gallery = () => {
                     userLocation: user.location,
                     videoCategory: currentMedia.category,
                     videoId: currentMedia.id,
+                    videoTitle: currentMedia.title,
                 })
             }
 
