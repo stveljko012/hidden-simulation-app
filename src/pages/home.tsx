@@ -19,6 +19,8 @@ const Home = () => {
                 userId: user.userId,
                 sessionId: sessionId,
                 returnDay: returnDay,
+                userLocation: user.location,
+                userName: user.username,
             })
         }
     }, [])

@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from '@/contexts/session/session.context'
 import { useAnalytics } from '@/contexts/analytics/analytics.context'
-import { LAST_VISIT_STORAGE_KEY } from '@/contexts/session/constants/storage-keys.constant'
 
 const Home = () => {
-    const { login, user, sessionId, getReturnDay } = useSession()
+    const { login } = useSession()
     const analytics = useAnalytics()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

@@ -1,24 +1,30 @@
-import { EVENT_TYPES, EventType } from './event-types.model'
+import { EventType } from './event-types.model'
 import { EngagementAction } from './engagement-actions.model'
 
-type BaseEvent = {
+export type BaseEvent = {
     timestamp: string
     eventType: EventType
     userId: string
+    userName: string
     sessionId: string
+    userLocation: string
 }
 
 export type VideoViewEvent = BaseEvent & {
     videoId: string
     creatorId: string
+    creatorName: string
     watchTime: number
     watchPercentage: number
     feedPosition: number
+    videoCategory: string
 }
 
 export type EngagementEvent = BaseEvent & {
     videoId: string
+    videoCategory: string
     creatorId: string
+    creatorName: string
     action: EngagementAction
 }
 
@@ -32,19 +38,3 @@ export type SessionEndEvent = BaseEvent & {
 }
 
 export type AnalyticsEvent = VideoViewEvent | EngagementEvent | SessionEndEvent | SessionStartEvent
-
-export const isSessionStartEvent = (data: AnalyticsEvent): data is SessionStartEvent => {
-    return data.eventType === EVENT_TYPES.sessionStart
-}
-
-export const isSessionEndEvent = (data: AnalyticsEvent): data is SessionEndEvent => {
-    return data.eventType === EVENT_TYPES.sessionEnd
-}
-
-export const isVideoViewEvent = (data: AnalyticsEvent): data is VideoViewEvent => {
-    return data.eventType === EVENT_TYPES.videoView
-}
-
-export const isEngagementEvent = (data: AnalyticsEvent): data is EngagementEvent => {
-    return data.eventType === EVENT_TYPES.engagement
-}

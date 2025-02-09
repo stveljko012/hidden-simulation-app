@@ -14,6 +14,8 @@ const Menu = () => {
                 sessionId,
                 userId: user.userId,
                 sessionDuration: getSessionDuration(),
+                userLocation: user.location,
+                userName: user.username,
                 videosWatched,
             })
         }
