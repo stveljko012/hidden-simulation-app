@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from '@/contexts/session/session.context'
-import { useAnalytics } from '@/contexts/analytics/analytics.context'
 
 const Home = () => {
     const { login } = useSession()
-    const analytics = useAnalytics()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -22,6 +20,7 @@ const Home = () => {
                 setError('Enter username and password.')
             }
         } catch (e) {
+            console.log(e)
             setError('Invalid username and password combination.')
         }
     }
