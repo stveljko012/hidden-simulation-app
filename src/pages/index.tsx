@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from '@/contexts/session/session.context'
+import '../styles/styles.css'
 
 const Home = () => {
     const { login } = useSession()
