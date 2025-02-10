@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from '@/contexts/session/session.context'
-import { FullStory } from '@fullstory/browser'
-
 
 const Home = () => {
     const { login } = useSession()
@@ -10,10 +8,6 @@ const Home = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const router = useRouter()
-
-    useEffect(() => {
-        FullStory.event('Page Loaded', { page: 'Home' });
-    }, [])
 
     const handleLogin = async () => {
         setError('')
