@@ -8,8 +8,8 @@ export type SessionUser = {
 export const allUsers = [
     { username: 'test', password: 'test', userId: '8f7e6d5c-4b3a-4a3b-8c7d-6e5f4d3c2b1a', location: 'Berlin' },
     {
-        username: 'bob_jones',
-        password: 'Test456!',
+        username: 'hidden',
+        password: 'hidden',
         userId: '7e6f5d4c-3b2a-1c0d-9e8f-7a6b5c4d3e2f',
         location: 'Atlanta',
     },
