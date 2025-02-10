@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { allUsers, SessionUser } from '@/data/users'
 import { LAST_VISIT_STORAGE_KEY } from '@/contexts/session/constants/storage-keys.constant'
+import { FullStory } from '@fullstory/browser'
 
 interface SessionContextType {
     user: SessionUser | null
@@ -55,6 +56,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             setReturnDay(getReturnDay())
             setSessionUser(user)
             setSessionStart(new Date())
+            FullStory.identify(user.userId, { displayName: `User ${user.userId}` })
 
             resetSession()
         } else {

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import '../styles/styles.css'
 import { useSession } from '@/contexts/session/session.context'
 import { useAnalytics } from '@/contexts/analytics/analytics.context'
+import { FullStory } from '@fullstory/browser'
 
 const Menu = () => {
     const router = useRouter()
@@ -19,6 +20,8 @@ const Menu = () => {
                 videosWatched,
             })
         }
+
+        FullStory.shutdown()
 
         logout()
         router.replace('/')

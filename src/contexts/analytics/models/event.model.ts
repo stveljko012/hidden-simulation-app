@@ -17,11 +17,13 @@ export type VideoViewEvent = BaseEvent & {
     watchTime: number
     watchPercentage: number
     feedPosition: number
+    videoTitle: string
     videoCategory: string
 }
 
 export type EngagementEvent = BaseEvent & {
     videoId: string
+    videoTitle: string
     videoCategory: string
     creatorId: string
     creatorName: string
